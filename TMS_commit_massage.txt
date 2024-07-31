@@ -1,0 +1,9 @@
+Step one:
+ Initial project setup and basic CRUD API
+
+- Created Spring Boot project.
+- Configured H2 database.
+- Defined Task entity.
+- Created Task repository and service layers.
+- Implemented TaskController for CRUD operations.
+- Created and tested API endpoints.
