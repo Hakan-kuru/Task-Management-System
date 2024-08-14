@@ -7,29 +7,48 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping
+@RequestMapping("/api/taks")
 public class TaskController {
-    @Autowired
-    private TaskService TaskService;
+
     @Autowired
     private TaskService taskService;
 
-    @GetMapping
-    public List<Task> getAllTasks(){
-        return taskService.getAllTasks();
+    @PostMapping
+    public ResponseEntity<Task> createTask(@RequestBody Task task){
+        Task createdTask = taskService.createTask(task);
+        return ResponseEntity.ok(createdTask);
     }
-    @GetMapping
-    public Task createTask(@RequestBody Task task){
-        return taskService.createTask(task);
+    @GetMapping("/{id}")
+    public ResponseEntity<Task> getTaskById(@PathVariable long id){// @ ??
+        Optional<Task> task =taskService.getTaskById(id);//getTaskById???
+        if (task.isPresent()){
+            return ResponseEntity.ok(task.get());
+        }else {
+            return ResponseEntity.notFound().build();
+        }
     }
     @PutMapping("/{id}")
     public ResponseEntity<Task> updateTask(
             @PathVariable Long id,
-            @RequestBody Task taskDetails ){
-        return ResponseEntity.ok(taskService.updateTask(id, taskDetails));
+            @RequestBody Task updatedTask )
+    {
+        Optional<Task> existingTask = taskService.getTaskById(id);
+        if (existingTask.isPresent()) {
+            updatedTask.setId(id); // Ensure the ID is set correctly
+            Task updated = taskService.updateTask(updatedTask);
+            return ResponseEntity.ok(updated);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
+    @GetMapping
+    public List<Task> getAllTasks(){
+        return taskService.getAllTasks();
+    }
+
     public ResponseEntity<Void> deleteTask(@PathVariable Long id){
         taskService.deleteTask(id);
         return ResponseEntity.noContent().build();

@@ -16,18 +16,13 @@ public class TaskService {
     public List<Task> getAllTasks(){
         return taskRepository.findAll();
     }
-    public Optional<Task> getById(Long id){
+    public Optional<Task> getTaskById(Long id){
         return taskRepository.findById(id);
     }
     public Task createTask(Task task) {
         return taskRepository.save(task);
     }
-    public Task updateTask(Long id,Task taskDetails){
-        Task task = taskRepository.findById(id).orElseThrow(()-> new RuntimeException());
-        task.setName(taskDetails.getName());
-        task.setDescription(taskDetails.getDescription());
-        task.setDueDate(taskDetails.getDueDate());
-        task.setComplated(taskDetails.isComplated());
+    public Task updateTask(Task task){
         return taskRepository.save(task);
     }
     public void deleteTask(Long id){

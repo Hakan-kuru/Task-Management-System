@@ -55,7 +55,7 @@ public class TaskServiceTests {
                  false);
          when(taskRepository.findById(1L)).thenReturn(Optional.of(task));
 
-         Optional<Task> retrievedTask = taskService.getById(1L);
+         Optional<Task> retrievedTask = taskService.getTaskById(1L);
          assertNotNull(retrievedTask.isPresent());// null mu?
          assertTrue(retrievedTask.isPresent());// null değil mi?
          assertEquals("Test Task", retrievedTask.get().getName());//CreatedTask'ın adı "Test task" mı?
